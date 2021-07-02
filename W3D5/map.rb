@@ -3,7 +3,6 @@ class Map
     def initialize
         @map = Array.new() {Array.new()}
     end
-
     def set(key,value)
         key_arr = []
         @map.each do |sub_arr|
@@ -16,7 +15,6 @@ class Map
             @map << [key,value]
         end
     end
-
     def get(key)
         key_arr = []
         @map.each do |sub_arr|
@@ -36,6 +34,4 @@ class Map
     def show
         @map
     end
-
-
 end
