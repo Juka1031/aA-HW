@@ -30,15 +30,26 @@ class Play
     play = PlayDBConnection.instance.execute(<<-SQL, title)
     SELECT *
     FROM plays
-    WHERE title = 
+    WHERE title = ?
     SQL
-    unless play.length > 0
+    if play.length == 0
         return nil
     end
+    Play.new(play[0])
   end
 
   def self.find_by_playwright(name)
+    playwright =PlayDBConnection.instance.execute(<<-SQL, name)
+    SELECT *
+    FROM playwrights
+    WHERE name = ?
+  SQL
+  if playwright.length == 0
+    return nil
   end
+  Playwright.new(playwright[0])
+  end
+
 
   def create
     raise "#{self} already in database" if self.id
@@ -64,17 +75,25 @@ class Play
   end
 end
 
-class Playwright
-    def self.all
-        data = PlayDBConnection.instance.execute("SELECT * FROM playwrights")
-        data.map { |datum| Playwright.new(datum) }
-    end
+# class Playwright
+#     def self.all
+#         data = PlayDBConnection.instance.execute("SELECT * FROM playwrights")
+#         data.map { |datum| Playwright.new(datum) }
+#     end
 
-    def create
-        raise "#{self} already in database" if self.id
-        PlayDBConnection.instance.execute(<<-SQL, self.name, self.birth_year)
-    end
-    def initialize
+#     def create
+#         raise "#{self} already in database" if self.id
+#         PlayDBConnection.instance.execute(<<-SQL, self.name, self.birth_year)
+#     end
+#     def initialize
+        
+#     end
+# end
+
+class Playwright
+    def initialize(options)
+        @id = options['id']
+        @name = option['name']
         
     end
 end
